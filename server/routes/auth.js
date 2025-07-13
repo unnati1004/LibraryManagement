@@ -1,7 +1,7 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import User from '../models/User.js';
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ router.post('/register', async (req, res) => {
   const hashed = await bcrypt.hash(password, 10);
   const user = await User.create({ email, password: hashed });
   const token = generateToken(user);
+  req.headers['authorization'] = `Bearer ${token}`;
   // console.log("token",token);
   res.cookie('token', token, { httpOnly: true }).json({ email: user.email });
 });
@@ -22,6 +23,7 @@ router.post('/login', async (req, res) => {
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).send('Invalid');
   const token = generateToken(user);
+  req.headers['authorization'] = `Bearer ${token}`;
   res.cookie('token', token, { httpOnly: true }).json({ email: user.email });
 });
 
@@ -36,8 +38,8 @@ router.get('/me', (req, res) => {
   }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', (_, res) => {
   res.clearCookie('token').send('Logged out');
 });
 
-module.exports = router;
+export default router;
