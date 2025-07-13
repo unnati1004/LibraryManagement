@@ -12,7 +12,7 @@ require('dotenv').config();
 const app = express();
 // const allowedOrigins = ['https://librarymanagement-p9sa.onrender.com'|| 'http://localhost:5174'];
 const allowedOrigins = 'https://librarymanagement-p9sa.onrender.com';
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
