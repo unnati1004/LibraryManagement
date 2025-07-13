@@ -1,7 +1,7 @@
-import express from 'express';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import User from '../models/User.js';
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const User = require('../models/User.js');
 
 const router = express.Router();
 
@@ -42,4 +42,4 @@ router.get('/logout', (_, res) => {
   res.clearCookie('token').send('Logged out');
 });
 
-export default router;
+module.exports = router;
