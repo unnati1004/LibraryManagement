@@ -1,7 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const MyBook = require('../models/MyBook');
-// const Book = require('../models/Book');
+const mongoose = require('mongoose');
+const Book = require('../models/Book');
 const router = express.Router();
 
 const authenticate = (req, res, next) => {
@@ -14,6 +15,7 @@ const authenticate = (req, res, next) => {
       return res.status(500).send('Server misconfiguration: JWT_SECRET not set');
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log('Decoded JWT:', decoded);
     req.user = decoded;
     next();
   } catch (err) {
@@ -23,15 +25,12 @@ const authenticate = (req, res, next) => {
 
 router.get('/', authenticate, async (req, res) => {
   try {
-    // Ensure req.user.id exists and is valid
-    if (!req.user || !req.user.id) {
-      return res.status(401).send('Unauthorized: Invalid user');
-    }
-    console.log(req.user.id,req.user);
-    const books = await MyBook.find({ userId: req.user.id }).populate('bookId');
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const books = await MyBook.find({ userId }).populate('bookId');
     res.json(books);
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error('GET /api/mybooks error:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
