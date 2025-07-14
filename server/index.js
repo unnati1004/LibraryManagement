@@ -11,11 +11,14 @@ require('dotenv').config();
 
 const app = express();
 // const allowedOrigins = ['https://librarymanagement-p9sa.onrender.com'|| 'http://localhost:5174'];
-const allowedOrigins = 'https://librarymanagement-p9sa.onrender.com';
-app.use(cors({ origin: '*', credentials: true }));
+const allowedOrigins = 'http://localhost:5173';
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
-
+app.use((err, req, res, next) => {
+  console.error('Unhandled Error:', err);
+  res.status(500).json({ message: 'Internal Server Error', error: err.message });
+});
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
