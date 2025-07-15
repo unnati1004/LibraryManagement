@@ -6,7 +6,7 @@ import { fetchMyBooks, updateStatus, updateRating } from '../store/slices/myBook
 function MyBooks() {
   const dispatch = useDispatch();
   const { myBooks, loading, error } = useSelector((state) => state.myBooks);
-console.log(myBooks)
+
   useEffect(() => {
     dispatch(fetchMyBooks());
   }, [dispatch]);
@@ -19,14 +19,18 @@ console.log(myBooks)
     dispatch(updateRating({ bookId, rating }));
   };
 
-  if (loading) return <p className='p-4'>Loading your books...</p>;
-  if (error) return <p className='p-4 text-red-500'>Error loading your books.</p>;
+  if (loading) return <p className="p-4">Loading your books...</p>;
+  if (error) return <p className="p-4 text-red-500">Error loading your books.</p>;
+
+  if (!myBooks || myBooks.length === 0) {
+    return <p className="p-4 text-gray-500">No books found in your list.</p>;
+  }
 
   return (
-    <div className='p-4 grid grid-cols-2 gap-4'>
+    <div className="p-4 grid grid-cols-2 gap-4">
       {myBooks.map((b) => (
         <MyBookCard
-          key={b._id}
+          key={b.bookId._id}
           book={b}
           onStatusChange={handleStatusChange}
           onRatingChange={handleRatingChange}

@@ -1,35 +1,33 @@
-import React from 'react';
-import axios from 'axios';
-
-function MyBookCard({ book, refresh }) {
-
-  const handleStatusChange = async (e) => {
-    await axios.patch(`http://localhost:5000/api/mybooks/${book.bookId._id}/status`, { status: e.target.value });
-    refresh();
+function MyBookCard({ book, onStatusChange, onRatingChange }) {
+  const handleStatus = (e) => {
+    onStatusChange(book.bookId._id, e.target.value); // ✅ pass status
   };
 
-  const handleRatingChange = async (e) => {
-    await axios.patch(`http://localhost:5000/api/mybooks/${book.bookId._id}/rating`, { rating: Number(e.target.value) });
-    refresh();
+  const handleRating = (e) => {
+    const newRating = parseInt(e.target.value);
+    if (newRating >= 1 && newRating <= 5) {
+      onRatingChange(book.bookId._id, newRating); // ✅ pass rating
+    }
   };
 
   return (
-    <div className='border p-4 rounded shadow-md'>
-      <h2 className='font-bold'>{book.bookId.title}</h2>
+    <div className="border p-4 rounded shadow-md">
+      <h2 className="font-bold">{book.bookId.title}</h2>
       <p>{book.bookId.author}</p>
-      <select value={book.status || ''} onChange={handleStatusChange} className='mt-2'>
+      <select value={book.status || ''} onChange={handleStatus} className="mt-2">
+        <option value="">Select Status</option>
         <option value="Want to Read">Want to Read</option>
         <option value="Currently Reading">Currently Reading</option>
         <option value="Read">Read</option>
       </select>
       <input
-        type='number'
-        min='1'
-        max='5'
+        type="number"
+        min="1"
+        max="5"
         value={book.rating !== undefined && book.rating !== null ? book.rating : ''}
-        onChange={handleRatingChange}
-        className='border mt-2 w-16'
-        placeholder='Rating'
+        onChange={handleRating}
+        className="border mt-2 w-16"
+        placeholder="Rating"
       />
     </div>
   );

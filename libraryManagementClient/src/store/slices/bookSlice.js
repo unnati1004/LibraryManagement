@@ -1,13 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || '';
+    axios.defaults.withCredentials = true;
 // Thunk to fetch all books
-export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
-  const res = await axios.get('http://localhost:5000/api/books/');
-  console.log(res);
-  return res.data;
-});
+export const fetchBooks = createAsyncThunk(
+  'books/fetchBooks',
+  async (_, thunkAPI) => {
+    try {
+      const res = await axios.get('/api/books');
+      return res.data;
+    } catch (err) {
+      console.error('Error in fetchBooks:', err);
 
+      return thunkAPI.rejectWithValue({
+        message: err.message,
+        code: err.code,
+        status: err.response?.status,
+        data: err.response?.data,
+        url: err.config?.url,
+      });
+    }
+  }
+);  
 const bookSlice = createSlice({
   name: 'books',
   initialState: {
@@ -27,6 +41,7 @@ const bookSlice = createSlice({
         state.books = action.payload;
       })
       .addCase(fetchBooks.rejected, (state) => {
+        console.log(state);
         state.loading = false;
         state.error = 'Failed to fetch books';
       });

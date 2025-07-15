@@ -1,29 +1,46 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
+require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const bookRoutes = require('./routes/books');
 const myBookRoutes = require('./routes/mybooks');
 
-const cors = require('cors');
-require('dotenv').config();
-
 const app = express();
-// const allowedOrigins = ['https://librarymanagement-p9sa.onrender.com'|| 'http://localhost:5174'];
-const allowedOrigins = 'http://localhost:5173';
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+
+const allowedOrigins = ['http://localhost:5173'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+// ✅ CORS must come before routes and json parsing
+app.use(cors(corsOptions));
+
+// ✅ Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
+
+// Parse JSON and cookies
 app.use(express.json());
 app.use(cookieParser());
-app.use((err, req, res, next) => {
-  console.error('Unhandled Error:', err);
-  res.status(500).json({ message: 'Internal Server Error', error: err.message });
-});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/mybooks', myBookRoutes);
 
+// MongoDB connection
 if (!process.env.MONGO_URI) {
   console.error('MONGO_URI is not defined in your .env file');
   process.exit(1);

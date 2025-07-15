@@ -1,16 +1,16 @@
-import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
+import { addMyBook } from '../store/slices/myBookSlice';
 
 function BookCard({ book }) {
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch()
   const handleAdd = async () => {
     if (!user) return alert('Please login to add books.');
-    dispatch(addMyBook({ userId: user._id, bookId: book._id, status: "Want to Read", rating: "4" }));
+    dispatch(addMyBook(book._id));
     addMyBook(book._id)
     alert('Book added!');
   };
-
+  
   return (
     <div className="border p-4 shadow-md rounded flex flex-col items-center sm:flex-row sm:items-start sm:space-x-4 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
       <img

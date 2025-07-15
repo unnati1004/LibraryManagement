@@ -12,10 +12,19 @@ router.post('/register', async (req, res) => {
   const { email, password } = req.body;
   const hashed = await bcrypt.hash(password, 10);
   const user = await User.create({ email, password: hashed });
+
   const token = generateToken(user);
-  req.headers['authorization'] = `Bearer ${token}`;
-  // console.log("token",token);
-  res.cookie('token', token, { httpOnly: true }).json({ email: user.email });
+ req.headers['authorization'] = `Bearer ${token}`;
+  console.log("token",token);
+  res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Lax'
+    }).json({
+  email: user.email,
+  token, // ✅ send token in response
+  user: { email: user.email } // optional for frontend
+});
 });
 
 router.post('/login', async (req, res) => {
@@ -24,7 +33,17 @@ router.post('/login', async (req, res) => {
   if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).send('Invalid');
   const token = generateToken(user);
   req.headers['authorization'] = `Bearer ${token}`;
-  res.cookie('token', token, { httpOnly: true }).json({ email: user.email });
+
+  res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    }).json({
+  email: user.email,
+  token, // ✅ send token in response
+  user: { email: user.email } // optional for frontend
+});
 });
 
 router.get('/me', (req, res) => {
