@@ -1,12 +1,14 @@
 function MyBookCard({ book, onStatusChange, onRatingChange }) {
+
   const handleStatus = (e) => {
-    onStatusChange(book.bookId._id, e.target.value); // ✅ pass status
+    const newStatus = e.target.value;
+    onStatusChange(book.bookId._id, newStatus); // ✅ Inform parent to update Redux state
   };
 
   const handleRating = (e) => {
     const newRating = parseInt(e.target.value);
     if (newRating >= 1 && newRating <= 5) {
-      onRatingChange(book.bookId._id, newRating); // ✅ pass rating
+      onRatingChange(book.bookId._id, newRating); // ✅ Inform parent to update Redux state
     }
   };
 

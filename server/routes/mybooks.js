@@ -46,7 +46,7 @@ router.post('/:bookId', authenticate, async (req, res) => {
   }
 });
 
-router.patch('/:bookId/status', authenticate, async (req, res) => {
+router.put('/:bookId/status', authenticate, async (req, res) => {
   try {
     const { bookId } = req.params;
     const { status } = req.body;
@@ -61,7 +61,7 @@ router.patch('/:bookId/status', authenticate, async (req, res) => {
   }
 });
 
-router.patch('/:bookId/rating', authenticate, async (req, res) => {
+router.put('/:bookId/rating', authenticate, async (req, res) => {
   try {
     const { bookId } = req.params;
     const { rating } = req.body;

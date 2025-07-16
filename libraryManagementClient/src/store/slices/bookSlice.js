@@ -7,6 +7,7 @@ export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',
   async (_, thunkAPI) => {
     try {
+      // debugger
       const res = await axios.get('/api/books');
       return res.data;
     } catch (err) {

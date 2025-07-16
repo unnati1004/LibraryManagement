@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST route to add a book
-router.post('/', async (req, res) => {
+router.post('/', async (req, res) => {  
   try {
     const { title, author, coverImage, availability } = req.body;
 

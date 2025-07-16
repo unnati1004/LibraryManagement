@@ -34,7 +34,7 @@ export const addMyBook = createAsyncThunk('myBooks/addMyBook', async (bookId, { 
 export const updateStatus = createAsyncThunk('myBooks/updateStatus', async ({ bookId, status }, { rejectWithValue }) => {
   try {
     console.log(bookId,status);
-    await axios.patch(`mybooks/${bookId}/status`, { status });
+    await axios.put(`mybooks/${bookId}/status`, { status });
     
     return { bookId, status };
   } catch (error) {
@@ -45,7 +45,7 @@ export const updateStatus = createAsyncThunk('myBooks/updateStatus', async ({ bo
 // Update rating
 export const updateRating = createAsyncThunk('myBooks/updateRating', async ({ bookId, rating }, { rejectWithValue }) => {
   try {
-    await axios.patch(`mybooks/${bookId}/rating`, { rating });
+    await axios.put(`mybooks/${bookId}/rating`, { rating });
     return { bookId, rating };
   } catch (error) {
     console.log(error)
