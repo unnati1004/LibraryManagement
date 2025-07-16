@@ -5,7 +5,7 @@ export const fetchMyBooks = createAsyncThunk(
   'myBooks/fetchMyBooks',
   async (_, thunkAPI) => {
     try {
-      const res = await axios.get('mybooks');
+      const res = await axios.get('/api/mybooks');
       return res.data;
     } catch (err) {
       console.error('Error in fetchBooks:', err);
@@ -21,7 +21,7 @@ export const fetchMyBooks = createAsyncThunk(
   }
 );  
 // Add a book to user's list
-export const addMyBook = createAsyncThunk('myBooks/addMyBook', async (bookId, { rejectWithValue }) => {
+export const addMyBook = createAsyncThunk('/api/myBooks/addMyBook', async (bookId, { rejectWithValue }) => {
   try {
     const res = await axios.post(`mybooks/${bookId}`);
     return res.data;
@@ -31,7 +31,7 @@ export const addMyBook = createAsyncThunk('myBooks/addMyBook', async (bookId, { 
 });
 
 // Update reading status
-export const updateStatus = createAsyncThunk('myBooks/updateStatus', async ({ bookId, status }, { rejectWithValue }) => {
+export const updateStatus = createAsyncThunk('/api/myBooks/updateStatus', async ({ bookId, status }, { rejectWithValue }) => {
   try {
     await axios.put(`mybooks/${bookId}/status`, { status });
     
@@ -42,7 +42,7 @@ export const updateStatus = createAsyncThunk('myBooks/updateStatus', async ({ bo
 });
 
 // Update rating
-export const updateRating = createAsyncThunk('myBooks/updateRating', async ({ bookId, rating }, { rejectWithValue }) => {
+export const updateRating = createAsyncThunk('/api/myBooks/updateRating', async ({ bookId, rating }, { rejectWithValue }) => {
   try {
     await axios.put(`mybooks/${bookId}/rating`, { rating });
     return { bookId, rating };

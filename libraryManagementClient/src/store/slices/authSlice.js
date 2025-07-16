@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 export const login = createAsyncThunk("auth/login", async (payload) => {
   const res = await axios.post(
-    "http://localhost:5000/api/auth/login",
+    "/api/auth/login",
     payload,
     {
       withCredentials: true,
@@ -15,7 +15,7 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
 
 export const register = createAsyncThunk("auth/register", async (payload) => {
   const res = await axios.post(
-    "http://localhost:5000/api/auth/register",
+    "/api/auth/register",
     payload,
     {
       withCredentials: true,
@@ -25,12 +25,12 @@ export const register = createAsyncThunk("auth/register", async (payload) => {
 });
 
 export const getCurrentUser = createAsyncThunk("auth/me", async () => {
-  const res = await axios.get("http://localhost:5000/api/auth/me");
+  const res = await axios.get("/api/auth/me");
   return res.data;
 });
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  await axios.get("http://localhost:5000/api/auth/logout");
+  await axios.get("/api/auth/logout");
 });
 
 const authSlice = createSlice({
