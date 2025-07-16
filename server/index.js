@@ -10,7 +10,7 @@ const myBookRoutes = require('./routes/mybooks');
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = ['http://localhost:5173','https://librarymanagement-p9sa.onrender.com'];
 
 const corsOptions = {
   origin: function (origin, callback) {
