@@ -33,7 +33,6 @@ export const addMyBook = createAsyncThunk('myBooks/addMyBook', async (bookId, { 
 // Update reading status
 export const updateStatus = createAsyncThunk('myBooks/updateStatus', async ({ bookId, status }, { rejectWithValue }) => {
   try {
-    console.log(bookId,status);
     await axios.put(`mybooks/${bookId}/status`, { status });
     
     return { bookId, status };
@@ -75,15 +74,12 @@ const myBookSlice = createSlice({
       })
       .addCase(fetchMyBooks.rejected, (state, action) => {
         state.loading = false;
-
         state.error = action.payload || 'Failed to fetch My Books';
       })
       .addCase(addMyBook.fulfilled, (state, action) => {
         state.myBooks.push(action.payload);
       })
-      .addCase(updateStatus.fulfilled, (state, action) => {
-        console.log(action);
-        
+      .addCase(updateStatus.fulfilled, (state, action) => { 
         const book = state.myBooks.find((b) => b.bookId._id === action.payload.bookId);
         if (book) book.status = action.payload.status;
       })

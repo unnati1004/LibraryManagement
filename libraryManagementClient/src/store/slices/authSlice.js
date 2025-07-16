@@ -3,7 +3,6 @@ import axios from "../../api/axios";
 import Cookies from "js-cookie";
 
 export const login = createAsyncThunk("auth/login", async (payload) => {
-  debugger;
   const res = await axios.post(
     "http://localhost:5000/api/auth/login",
     payload,
@@ -11,8 +10,6 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
       withCredentials: true,
     }
   );
-  console.log("Logginnn..");
-  console.log("res", res);
   return res.data;
 });
 

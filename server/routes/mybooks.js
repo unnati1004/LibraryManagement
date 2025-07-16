@@ -15,7 +15,6 @@ const authenticate = (req, res, next) => {
       return res.status(500).send('Server misconfiguration: JWT_SECRET not set');
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log('Decoded JWT:', decoded);
     req.user = decoded;
     next();
   } catch (err) {

@@ -8,15 +8,12 @@ function Home() {
   const dispatch = useDispatch();
   const { books, loading, error } = useSelector((state) => state.books);
   const { user } = useSelector((state) => state.auth);
-console.log(error);
   useEffect(() => {
     
     dispatch(fetchBooks());
   }, []);
 
   const handleAddToMyBooks = (bookId) => {
-    console.log("home add my book bookId",bookId);
-    
     if (!user) {
       alert('Please login to add books.');
     } else {

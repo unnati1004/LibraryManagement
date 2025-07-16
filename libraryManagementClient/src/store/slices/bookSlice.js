@@ -7,7 +7,6 @@ export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',
   async (_, thunkAPI) => {
     try {
-      // debugger
       const res = await axios.get('/api/books');
       return res.data;
     } catch (err) {
@@ -42,7 +41,6 @@ const bookSlice = createSlice({
         state.books = action.payload;
       })
       .addCase(fetchBooks.rejected, (state) => {
-        console.log(state);
         state.loading = false;
         state.error = 'Failed to fetch books';
       });
