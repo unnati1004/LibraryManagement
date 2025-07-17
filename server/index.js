@@ -10,7 +10,7 @@ const myBookRoutes = require('./routes/mybooks');
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:5173','https://librarymanagement-p9sa.onrender.com'];
+const allowedOrigins = ['http://localhost:5173/','https://librarymanagement-p9sa.onrender.com'];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -29,7 +29,20 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // ✅ Handle preflight requests for all routes
-// app.options('*', cors(corsOptions));
+ app.options('*', cors(corsOptions));
+
+app.use(express.static(path.join(__dirname, 'client', 'dist'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.js')) {
+      res.setHeader('Content-Type', 'text/javascript');
+    }
+    if (filePath.endsWith('.wasm')) {
+      res.setHeader('Content-Type', 'application/wasm');
+    }
+  }
+}));
+
+
 
 // Parse JSON and cookies
 app.use(express.json());
