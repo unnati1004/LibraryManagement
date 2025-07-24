@@ -64,15 +64,22 @@ router.put('/:bookId/rating', authenticate, async (req, res) => {
   try {
     const { bookId } = req.params;
     const { rating } = req.body;
+
     const entry = await MyBook.findOneAndUpdate(
       { userId: req.user.id, bookId },
       { rating },
       { new: true }
     );
-    res.json(entry);
+
+    if (!entry) {
+      return res.status(404).send('Book not found'); // ✅ Book not found
+    }
+
+    res.status(200).json(entry); // ✅ OK
   } catch (err) {
-    res.status(500).send('Server error');
+    res.status(500).send('Server error'); // ✅ Internal Server Error
   }
 });
+
 
 module.exports = router;

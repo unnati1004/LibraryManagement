@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv').config();
-
+const path = require('path');
 const authRoutes = require('./routes/auth');
 const bookRoutes = require('./routes/books');
 const myBookRoutes = require('./routes/mybooks');
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:5173/','https://librarymanagement-p9sa.onrender.com'];
+const allowedOrigins = ['http://localhost:5173','https://librarymanagement-p9sa.onrender.com'];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -61,7 +61,7 @@ if (!process.env.MONGO_URI) {
 
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => app.listen(5000, () => console.log('Server running on port 5000')))
+  .then(() => app.listen(process.env.PORT, () => console.log('Server running on port 5000')))
   .catch((err) => {
     console.error('Failed to connect to MongoDB:', err);
     process.exit(1);
