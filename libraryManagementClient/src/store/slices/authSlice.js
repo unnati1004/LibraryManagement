@@ -46,14 +46,6 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-
-        // ✅ Store token in localStorage
-        Cookies.set("token", action.payload.token, {
-          path: "/",
-          expires: 7,
-          sameSite: "Lax",
-          secure: false, // true if you're on HTTPS
-        });
         localStorage.setItem('token', action.payload.token);
       })
       .addCase(login.rejected, (state) => {

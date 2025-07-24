@@ -67,7 +67,9 @@ router.post('/login', async (req, res) => {
 
 // Me Route
 router.get('/me', (req, res) => {
-  const token = req.cookies.token;
+  const token =
+    req.cookies.token ||
+    (req.headers.authorization && req.headers.authorization.split(' ')[1]);
 
   if (!token) return res.status(401).send('Unauthorized');
 
@@ -78,6 +80,7 @@ router.get('/me', (req, res) => {
     res.status(401).send('Invalid token');
   }
 });
+
 
 // Logout Route
 router.get('/logout', (_, res) => {
