@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: process.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
 
