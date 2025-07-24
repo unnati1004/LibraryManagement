@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-require('dotenv').config();
+require('dotenv').config({debug: true}); // ✅ Load environment variables
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const bookRoutes = require('./routes/books');
